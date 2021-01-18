@@ -3,8 +3,14 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
-export const router = new VueRouter({
+const router = new VueRouter({
   routes: [
-    {}
+    {
+      name: 'login',
+      path: '/login',
+      component: () => import('@/views/login.vue'),
+    }
   ],
 });
+
+export default router;
