@@ -4,21 +4,21 @@
       class="hminput"
       :class="{ success: flag, error: !flag }"
       @input="handlerinput"
-      :placeholder="placeholder"
+      @change="handlerchange"
+      :msg="msg"
+      v-bind="$attrs"
     />
   </div>
 </template>
 
 <script>
 export default {
+  inheritAttrs: false,
   props: {
     ruler: {
       type: RegExp,
     },
-    placeholder: {
-      type: String,
-    },
-    value: {
+    msg: {
       type: String,
     },
   },
@@ -29,11 +29,23 @@ export default {
   },
   methods: {
     handlerinput(e) {
+      if (this.ruler) {
+        if (this.ruler.test(e.target.value)) {
+          this.flag = true;
+        } else {
+          this.flag = false;
+        }
+      }
       this.$emit("input", e.target.value);
-      if (this.ruler.test(e.target.value)) {
-        this.flag = true;
-      } else {
-        this.flag = false;
+    },
+    handlerchange(e) {
+      if (this.ruler) {
+        if (!this.ruler.test(e.target.value)) {
+          this.$toast.fail({
+            message: this.msg,
+            options: "top",
+          });
+        }
       }
     },
   },

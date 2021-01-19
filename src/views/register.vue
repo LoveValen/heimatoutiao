@@ -21,12 +21,13 @@
           placeholder="密码"
           :ruler="/^.{3,}$/"
         ></hminput>
+        <hminput v-model="user.nickname" placeholder="昵称"></hminput>
       </div>
       <p class="tips">
-        没有账号？
-        <a href="#/register" class="">去注册</a>
+        已有账号？
+        <a href="#/login" class="">去登录</a>
       </p>
-      <hmbutton type="primary" @click="login">登录</hmbutton>
+      <hmbutton type="primary" @click="register">注册</hmbutton>
     </div>
   </div>
 </template>
@@ -34,7 +35,7 @@
 <script>
 import hmbutton from "@/components/hmbutton.vue";
 import hminput from "@/components/hminput.vue";
-import { userlogin } from "@/apis/user.js";
+import { userRegister } from "@/apis/user.js";
 
 export default {
   data() {
@@ -42,6 +43,7 @@ export default {
       user: {
         username: "",
         password: "",
+        nickname: "",
       },
     };
   },
@@ -50,36 +52,14 @@ export default {
     hminput,
   },
   methods: {
-    async login() {
-      // userlogin(this.user)
-      //   .then((resData) => {
-      //     console.log(resData);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-      if (
-        /^1\d{10}$|^(0\d{2,3}-?|\(0\d{2,3}\))?[1-9]\d{4,7}(-\d{1,8})?$/.test(
-          this.user.username
-        ) &&
-        /^.{3,}$/.test(this.user.password)
-      ) {
-        try {
-          let res = await userlogin(this.user);
-          // console.log(res);
-          if (res.data.statusCode == 200) {
-            this.$toast.success(res.data.message);
-            localStorage.setItem("token", res.data.data.token);
-            this.$router.push({ path: `/pensonal` });
-          }
-        } catch {
-          this.$toast.fail({
-            message: "用户名或密码错误",
-            options: "top",
-          });
-        }
+    async register() {
+      let res = await userRegister(this.user);
+      console.log(res);
+      if (res.data.message == "注册成功") {
+        this.$toast.success({ message: "注册成功" });
+        this.$router.push({ name: "login" });
       } else {
-        this.$toast.fail({ message: "用户名或密码错误", options: "top" });
+        this.$toast.fail({ message: "注册失败，请检查数据" });
       }
     },
   },
