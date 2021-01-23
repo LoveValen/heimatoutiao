@@ -53,12 +53,12 @@ export default {
   },
   methods: {
     async register() {
-      let res = await userRegister(this.user);
-      console.log(res);
-      if (res.data.message == "注册成功") {
+      try {
+        let res = await userRegister(this.user);
         this.$toast.success({ message: "注册成功" });
         this.$router.push({ name: "login" });
-      } else {
+        console.log(res);
+      } catch {
         this.$toast.fail({ message: "注册失败，请检查数据" });
       }
     },

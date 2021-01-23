@@ -15,3 +15,20 @@ export const userRegister = function (data) {
     data
   });
 };
+
+export const userInfo = function (id) {
+  return myaxios({
+    // method: 'get',
+    url: `/user/${id}`,
+    // headers: { 'Authorization': localStorage.getItem('token') }
+  });
+};
+
+// 编辑用户信息
+export const updateUserInfo = function (id, data) {
+  return myaxios({
+    method: 'post',
+    url: `/user_update/${id}`,
+    data
+  });
+}

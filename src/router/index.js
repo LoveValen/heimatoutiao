@@ -6,6 +6,16 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   routes: [
     {
+      default: '',
+      path: '/',
+      redirect: '/index'
+    },
+    {
+      name: 'index',
+      path: '/index',
+      component: () => import('@/views/index.vue'),
+    },
+    {
       name: 'login',
       path: '/login',
       component: () => import('@/views/login.vue'),
@@ -17,8 +27,13 @@ const router = new VueRouter({
     },
     {
       name: 'pensonal',
-      path: '/pensonal',
+      path: '/pensonal/:id',
       component: () => import('@/views/pensonal.vue'),
+    },
+    {
+      name: 'edituserinfo',
+      path: '/edituserinfo/:id',
+      component: () => import('@/views/edituserinfo.vue'),
     }
   ],
 });

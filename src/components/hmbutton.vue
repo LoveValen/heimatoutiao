@@ -33,6 +33,7 @@ export default {
   border-radius: 8px;
   background-color: #909399;
   font-size: 18px;
+  margin: 10px auto;
 }
 .primary {
   background-color: #67c23a;

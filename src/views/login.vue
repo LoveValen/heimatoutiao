@@ -40,8 +40,8 @@ export default {
   data() {
     return {
       user: {
-        username: "",
-        password: "",
+        username: "13800138000",
+        password: "123",
       },
     };
   },
@@ -51,13 +51,6 @@ export default {
   },
   methods: {
     async login() {
-      // userlogin(this.user)
-      //   .then((resData) => {
-      //     console.log(resData);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
       if (
         /^1\d{10}$|^(0\d{2,3}-?|\(0\d{2,3}\))?[1-9]\d{4,7}(-\d{1,8})?$/.test(
           this.user.username
@@ -66,11 +59,12 @@ export default {
       ) {
         try {
           let res = await userlogin(this.user);
-          // console.log(res);
+          console.log(res);
           if (res.data.statusCode == 200) {
             this.$toast.success(res.data.message);
             localStorage.setItem("token", res.data.data.token);
-            this.$router.push({ path: `/pensonal` });
+            localStorage.setItem("userInfo", res.config.data);
+            this.$router.push({ path: `/pensonal/${res.data.data.user.id}` });
           }
         } catch {
           this.$toast.fail({
