@@ -1,13 +1,8 @@
 import myaxios from '@/utils/myaxios.js';
 
-export const columnList = function () {
+export const postList = function (params) {
   return myaxios({
-    url: '/category'
-  });
-}
-
-export const postList = function (id) {
-  return myaxios({
-    url: '/post?category=' + id
+    url: '/post',
+    params
   });
 }
