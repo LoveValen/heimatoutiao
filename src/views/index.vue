@@ -10,7 +10,7 @@
     </div>
     <!-- 导航栏 -->
     <div class="tab">
-      <van-tabs v-model="active" swipeable sticky active>
+      <van-tabs v-model="active" swipeable sticky>
         <van-tab
           v-for="value in columnList"
           :title="value.name"
@@ -28,9 +28,9 @@
               <!-- 列表项 -->
               <hmlist
                 type="1"
-                v-for="item in value.postList"
+                v-for="(item, index) in value.postList"
                 :post="item"
-                :key="item.id"
+                :key="index"
               ></hmlist>
             </van-pull-refresh>
           </van-list>
@@ -56,7 +56,7 @@ export default {
   },
   async mounted() {
     let resColumn = await columnList();
-    // console.log(resColumn); // 栏目列表
+    console.log(resColumn); // 栏目列表
     // 获取栏目列表
     this.columnList = resColumn.data.data;
     // 改造获取的数据，因为每个栏目的数据是互不干扰的，每个栏目的内容分别在单独的数组中
@@ -82,7 +82,7 @@ export default {
         pageSize: this.columnList[this.active].pageSize, // 获取当前栏目的显示数量
         category: this.columnList[this.active].id,
       });
-      console.log(resPost);
+      // console.log(resPost);
       // 将数据存储(追加)到栏目的postList数组中
       this.columnList[this.active].postList.push(...resPost.data.data);
       console.log(this.columnList);

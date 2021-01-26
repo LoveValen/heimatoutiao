@@ -34,6 +34,11 @@ const router = new VueRouter({
       name: 'edituserinfo',
       path: '/edituserinfo/:id',
       component: () => import('@/views/edituserinfo.vue'),
+    },
+    {
+      name: 'articleDetail',
+      path: '/articleDetail/:id',
+      component: () => import('@/views/articleDetail.vue'),
     }
   ],
 });

@@ -57,14 +57,21 @@ export default {
         ) &&
         /^.{3,}$/.test(this.user.password)
       ) {
+        // console.log(location.href.split("=")[1]);
         try {
           let res = await userlogin(this.user);
-          console.log(res);
+          // console.log(res);
           if (res.data.statusCode == 200) {
             this.$toast.success(res.data.message);
             localStorage.setItem("token", res.data.data.token);
             localStorage.setItem("userInfo", res.config.data);
-            this.$router.push({ path: `/pensonal/${res.data.data.user.id}` });
+            let redirecturl = decodeURIComponent(location.href.split("=")[1]);
+            // console.log(redirecturl);
+            if (redirecturl && redirecturl != "undefined") {
+              this.$router.push({ path: redirecturl });
+            } else {
+              this.$router.push({ path: `/pensonal/${res.data.data.user.id}` });
+            }
           }
         } catch {
           this.$toast.fail({

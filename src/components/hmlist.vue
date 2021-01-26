@@ -1,6 +1,10 @@
 <template>
   <!-- 图片少于3张情况下 -->
-  <div class="container" v-if="post.type === 1 && post.cover.length <= 2">
+  <div
+    class="container"
+    v-if="post.type === 1 && post.cover.length <= 2"
+    @click="$router.push({ path: `/articleDetail/${post.id}` })"
+  >
     <div class="container_left">
       <div class="left_top">
         {{ post.title }}
@@ -20,7 +24,11 @@
     </div>
   </div>
   <!-- 图片多于3张情况下 -->
-  <div class="container1" v-else-if="post.type === 1 && post.cover.length > 2">
+  <div
+    class="container1"
+    v-else-if="post.type === 1 && post.cover.length > 2"
+    @click="$router.push({ path: `/articleDetail/${post.id}` })"
+  >
     <div class="container_top">
       {{ post.title }}
     </div>
@@ -38,7 +46,11 @@
     </div>
   </div>
   <!-- 存在视频情况下 -->
-  <div class="container1" v-else-if="post.type === 2 && post.cover.length <= 2">
+  <div
+    class="container1"
+    v-else-if="post.type === 2 && post.cover.length <= 2"
+    @click="$router.push({ path: `/articleDetail/${post.id}` })"
+  >
     <div class="container_top">
       {{ post.title }}
     </div>
