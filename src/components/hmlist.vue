@@ -11,7 +11,7 @@
       </div>
       <div class="left_bottom">
         <span>{{ post.user.nickname }}</span>
-        <span>{{ post.comment_length }}跟帖</span>
+        <span>{{ post.comments || 0 }}跟帖</span>
       </div>
     </div>
     <div class="container_right">
@@ -93,7 +93,7 @@ export default {
 // 图片少于3张情况下
 .container {
   box-sizing: border-box;
-  padding: 5 * 100vw/360;
+  padding: 15 * 100vw/360 5 * 100vw/360;
   width: 100vw;
   display: flex;
   justify-content: space-between;
@@ -136,7 +136,7 @@ export default {
 // 图片多于3张或有视频情况下
 .container1 {
   box-sizing: border-box;
-  padding: 5 * 100vw/360;
+  padding: 15 * 100vw/360 5 * 100vw/360;
   width: 100vw;
   display: flex;
   flex-direction: column;

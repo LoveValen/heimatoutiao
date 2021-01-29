@@ -24,13 +24,19 @@
       </div>
     </router-link>
     <div class="container_footer">
-      <hmcell title="我的关注" desc="关注的用户"
+      <hmcell
+        title="我的关注"
+        desc="关注的用户"
+        @click="$router.push('/followuser')"
         ><span class="iconfont iconjiantou1"></span>
       </hmcell>
       <hmcell title="我的跟帖" desc="跟帖/回复"
         ><span class="iconfont iconjiantou1"></span>
       </hmcell>
-      <hmcell title="我的收藏" desc="文章/视频"
+      <hmcell
+        title="我的收藏"
+        desc="文章/视频"
+        @click="$router.push('/starArticle')"
         ><span class="iconfont iconjiantou1"></span>
       </hmcell>
       <hmcell title="设置"><span class="iconfont iconjiantou1"></span> </hmcell>
@@ -44,7 +50,7 @@ import hmcell from "@/components/hmcell.vue";
 import hmbutton from "@/components/hmbutton.vue";
 import { userInfo } from "@/apis/user.js";
 import axios from "@/utils/myaxios";
-import dateFormat from "@/utils/myfilter.js";
+import { dateFormat } from "@/utils/myfilter.js";
 
 export default {
   data() {

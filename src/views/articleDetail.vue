@@ -7,13 +7,7 @@
           <span class="iconfont iconnew"></span>
         </div>
         <div class="showAuthor" v-show="isTop">
-          <img
-            :src="
-              article.user.head_img &&
-              axios.defaults.baseURL + article.user.head_img
-            "
-            alt=""
-          />
+          <img :src="article.user && article.user.head_img" alt="" />
           <span>{{ article.user && article.user.nickname }}</span>
         </div>
         <!-- 关注 -->
@@ -56,36 +50,53 @@
     <!-- 评论区域 -->
     <div class="detail_comment">
       <div class="comment_top">精彩跟帖</div>
-      <div class="comment_content">
-        <div class="content_left">
-          <img src="../assets/logo.png" alt="" />
-          <div class="right">
-            <span>火星网友1</span>
-            <span>2小时前</span>
-          </div>
+      <!-- 评论列表 -->
+      <div v-if="comments.length != 0">
+        <hmcommentitem :parent="comments[0]"></hmcommentitem>
+        <div
+          class="more"
+          @click="$router.push({ path: '/goodcomments/' + article.id })"
+        >
+          更多更贴
         </div>
-        <div class="content_right">回复</div>
       </div>
+      <div v-else>精彩评论，等你更新</div>
+    </div>
+    <div class="detail_writeComment">
+      <!-- 写评论、收藏 -->
+      <hmcommentfooter
+        :article="article"
+        :isStar="article.has_star"
+      ></hmcommentfooter>
     </div>
   </div>
 </template>
 
 <script>
-import { getArticleDetail, follows, unfollows, like } from "@/apis/post.js";
-import dateFormat from "@/utils/myfilter.js";
+import { getArticleDetail, like, comment } from "@/apis/post.js";
+import { follows, unfollows } from "@/apis/user.js";
+import { dateFormat } from "@/utils/myfilter.js";
 import axios from "@/utils/myaxios.js";
+import hmcommentfooter from "@/components/hmcommentfooter.vue";
+import hmcommentitem from "@/components/hmcommentitem.vue";
 export default {
   data() {
     return {
       axios,
-      article: { user: {} }, // 渲染的文章详情
+      article: {}, // 渲染的文章详情
       isTop: false, // 头部滚动事件
+      comments: [],
     };
   },
   async mounted() {
     let res = await getArticleDetail(this.$route.params.id);
-    // console.log(res);
+    console.log(res);
+    res.data.data.user.head_img =
+      axios.defaults.baseURL + res.data.data.user.head_img; // 拼接头像路径
     this.article = res.data.data;
+    let resComment = await comment(this.article.id);
+    console.log(resComment);
+    this.comments = resComment.data.data;
   },
   filters: {
     dateFormat,
@@ -118,7 +129,6 @@ export default {
     // 点赞
     async likeArticle() {
       let res = await like(this.article.id);
-      console.log(res);
       if (res.status == 200) {
         this.article.has_like = !this.article.has_like;
       }
@@ -128,6 +138,10 @@ export default {
         this.article.like_length--;
       }
     },
+  },
+  components: {
+    hmcommentfooter,
+    hmcommentitem,
   },
 };
 </script>
@@ -249,13 +263,23 @@ export default {
       }
     }
   }
+  // 评论区域
   .detail_comment {
     border-top: 5px solid #ccc;
-    border-bottom: 2px solid #ccc;
+    // border-bottom: 2px solid #ccc;
     .comment_top {
       padding: 20 * 100vw/360;
       font-size: 20 * 100vw/360;
       text-align: center;
+    }
+    .more {
+      margin: 20 * 100vw/360 auto;
+      width: 120 * 100vw/360;
+      height: 40 * 100vw/360;
+      text-align: center;
+      line-height: 40 * 100vw/360;
+      background-color: #bbb;
+      border-radius: 20 * 100vw/360;
     }
   }
 }

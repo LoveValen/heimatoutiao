@@ -224,9 +224,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.top {
-  padding: 0 20 * 100vw/360;
-}
 .middle {
   position: relative;
   display: flex;

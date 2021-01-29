@@ -32,3 +32,29 @@ export const updateUserInfo = function (id, data) {
     data
   });
 }
+
+export const follows = function (id) {
+  return myaxios({
+    url: '/user_follows/' + id
+  });
+}
+
+export const unfollows = function (id) {
+  return myaxios({
+    url: '/user_unfollow/' + id
+  });
+}
+
+// 用户收藏列表
+export const userStar = function () {
+  return myaxios({
+    url: '/user_star'
+  });
+}
+
+// 用户关注列表
+export const userFollows = function () {
+  return myaxios({
+    url: '/user_follows'
+  });
+}

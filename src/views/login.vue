@@ -64,7 +64,13 @@ export default {
           if (res.data.statusCode == 200) {
             this.$toast.success(res.data.message);
             localStorage.setItem("token", res.data.data.token);
-            localStorage.setItem("userInfo", res.config.data);
+            localStorage.setItem(
+              "userInfo",
+              JSON.stringify({
+                ...JSON.parse(res.config.data),
+                id: res.data.data.user.id,
+              })
+            );
             let redirecturl = decodeURIComponent(location.href.split("=")[1]);
             // console.log(redirecturl);
             if (redirecturl && redirecturl != "undefined") {

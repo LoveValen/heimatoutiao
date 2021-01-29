@@ -25,18 +25,24 @@ export default {
 
 <style lang="less" scoped>
 .header {
-  width: 320 * 100vw/360;
-  height: 40px;
+  box-sizing: border-box;
+  // width: 320 * 100vw/360;
+  width: 100%;
+  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // div:nth-child(1),
-  // div:nth-child(3) {
-  //   width: 20px;
-  //   height: 20px;
-  //   line-height: 20px;
-  // }
+  padding: 0 20 * 100vw/360;
+  div:nth-child(1),
+  div:nth-child(3) {
+    flex: 1;
+  }
+  div:nth-child(3) {
+    text-align: end;
+  }
   div:nth-child(2) {
+    flex: 3;
+    text-align: center;
     font-weight: 700;
   }
 }

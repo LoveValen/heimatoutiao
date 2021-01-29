@@ -11,6 +11,11 @@ const router = new VueRouter({
       redirect: '/index'
     },
     {
+      default: '',
+      path: '/pensonal/undefined',
+      redirect: '/login'
+    },
+    {
       name: 'index',
       path: '/index',
       component: () => import('@/views/index.vue'),
@@ -31,6 +36,16 @@ const router = new VueRouter({
       component: () => import('@/views/pensonal.vue'),
     },
     {
+      name: 'starArticle',
+      path: '/starArticle',
+      component: () => import('@/views/starArticle.vue'),
+    },
+    {
+      name: 'followUser',
+      path: '/followuser',
+      component: () => import('@/views/followUser.vue'),
+    },
+    {
       name: 'edituserinfo',
       path: '/edituserinfo/:id',
       component: () => import('@/views/edituserinfo.vue'),
@@ -39,6 +54,11 @@ const router = new VueRouter({
       name: 'articleDetail',
       path: '/articleDetail/:id',
       component: () => import('@/views/articleDetail.vue'),
+    },
+    {
+      name: 'goodcomments',
+      path: '/goodcomments/:id',
+      component: () => import('@/views/goodcomments.vue'),
     }
   ],
 });

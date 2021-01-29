@@ -6,7 +6,10 @@
         <div class="van-icon van-icon-search"></div>
         <div>搜索新闻</div>
       </div>
-      <div class="right van-icon van-icon-user-circle-o"></div>
+      <div
+        class="right van-icon van-icon-user-circle-o"
+        @click="$router.push({ path: `/pensonal/${userId}` })"
+      ></div>
     </div>
     <!-- 导航栏 -->
     <div class="tab">
@@ -49,6 +52,7 @@ export default {
     return {
       columnList: [], // 栏目列表
       active: localStorage.getItem("token") ? 1 : 0, // 登录后判断是否有token，如果有，第一项栏目是关注。
+      userId: JSON.parse(localStorage.getItem("userInfo") || "{}").id,
     };
   },
   components: {
@@ -56,7 +60,7 @@ export default {
   },
   async mounted() {
     let resColumn = await columnList();
-    console.log(resColumn); // 栏目列表
+    // console.log(resColumn); // 栏目列表
     // 获取栏目列表
     this.columnList = resColumn.data.data;
     // 改造获取的数据，因为每个栏目的数据是互不干扰的，每个栏目的内容分别在单独的数组中

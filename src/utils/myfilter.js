@@ -1,7 +1,11 @@
 import moment from 'moment';
 
-const dateFormat = function (data, sep = '-') {
+export const dateFormat = function (data, sep = '-') {
   return moment(data).format(`YYYY${sep}MM${sep}DD`);
 }
 
-export default dateFormat;
+export const offsetTimeFormat = function (data) {
+  return moment(data).locale('zh-cn').fromNow();
+}
+
+// export default dateFormat;
