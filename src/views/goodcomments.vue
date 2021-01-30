@@ -20,10 +20,14 @@
           <span>{{ value.user.nickname }}</span>
           <span>{{ value.create_date | offsetTimeFormat }}</span>
         </div>
-        <div class="content_right" @click="replycomment(value.id)">回复</div>
+        <div class="content_right" @click="replycomment(value)">回复</div>
       </div>
       <!-- 嵌套评论 -->
-      <hmcommentitem v-if="value.parent" :parent="value.parent"></hmcommentitem>
+      <hmcommentitem
+        v-if="value.parent"
+        :parent="value.parent"
+        @send="replycomment(value)"
+      ></hmcommentitem>
       <div class="container_bottom">{{ value.content }}</div>
     </div>
     <div class="bottom">
@@ -31,6 +35,7 @@
         :article="article"
         @reflashData="reflashData"
         :comment="temp"
+        @reset="temp = null"
       ></hmcommentfooter>
     </div>
   </div>
@@ -88,7 +93,8 @@ export default {
       window.scrollTo(0, 0); //回到顶部
     },
     replycomment(value) {
-      this.temp = { id: value };
+      this.temp = value;
+      // this.temp = { ...value };
     },
   },
 };

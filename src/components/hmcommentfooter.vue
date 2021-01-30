@@ -20,11 +20,11 @@
   </div>
   <div class="writeComment" v-else>
     <div class="left">
-      <textarea ref="commtext" rows="5" v-model="content">回复：</textarea>
+      <textarea ref="commtext" rows="5" v-model="content"></textarea>
     </div>
     <div class="right">
       <span @click="publishComment">发 送</span>
-      <span @click="isFocus = !isFocus">取 消</span>
+      <span @click="cancleComment">取 消</span>
     </div>
   </div>
 </template>
@@ -44,7 +44,13 @@ export default {
   },
   watch: {
     comment() {
-      this.isFocus = false;
+      // console.log(this.comment);
+      if (this.comment) {
+        this.isFocus = false;
+        setTimeout(() => {
+          this.$refs.commtext.focus();
+        }, 0);
+      }
     },
   },
   data() {
@@ -55,8 +61,17 @@ export default {
     };
   },
   methods: {
+    cancleComment() {
+      this.isFocus = !this.isFocus;
+      this.content = "";
+      // 不能再子组件中修改props的值，只能在父组件中修改
+      this.$emit("reset");
+    },
     commentFocus() {
       this.isFocus = !this.isFocus;
+      setTimeout(() => {
+        this.$refs.commtext.focus();
+      }, 0);
     },
     // 收藏
     async starArticle() {
@@ -69,12 +84,16 @@ export default {
     async publishComment() {
       let data = {
         content: this.content,
-        parent_id: this.comment.id,
       };
+      if (this.comment) {
+        data.parent_id = this.comment.id;
+      }
       let res = await publishcomment(this.article.id, data);
       // console.log(res);
       this.$emit("reflashData");
       this.content = ""; // 清空输入框的数据
+      this.isFocus = true;
+      this.$toast({ message: res.data.message });
     },
   },
 };
@@ -144,7 +163,9 @@ export default {
   .left {
     flex: 4;
     textarea {
+      box-sizing: border-box;
       width: 100%;
+      padding: 8 * 100vw/360;
       border: none;
       resize: none;
       background-color: #cfcfcf;

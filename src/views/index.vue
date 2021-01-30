@@ -59,6 +59,12 @@ export default {
     hmlist,
   },
   async mounted() {
+    document.querySelector(".van-sticky").onclick = (e) => {
+      // console.log(e.target.className);
+      if (e.target.className == "van-sticky") {
+        this.$router.push({ name: "cateManager" });
+      }
+    };
     let resColumn = await columnList();
     // console.log(resColumn); // 栏目列表
     // 获取栏目列表
@@ -89,7 +95,7 @@ export default {
       // console.log(resPost);
       // 将数据存储(追加)到栏目的postList数组中
       this.columnList[this.active].postList.push(...resPost.data.data);
-      console.log(this.columnList);
+      // console.log(this.columnList);
       // 本次加载结束，将loading重置为false，以便下次下拉
       this.columnList[this.active].loading = false;
       if (resPost.data.data.length < this.columnList[this.active].pageSize) {
@@ -169,6 +175,22 @@ export default {
   .tab {
     /deep/.van-tabs__wrap--scrollable .van-tabs__nav {
       background-color: #eee;
+    }
+    /deep/.van-sticky {
+      padding-right: 52px;
+      background-color: transparent;
+      &::after {
+        position: absolute;
+        content: "+";
+        width: 52px;
+        height: 44px;
+        top: 0;
+        right: 0;
+        background-color: #eee;
+        text-align: center;
+        line-height: 44px;
+        font-size: 24px;
+      }
     }
   }
 }

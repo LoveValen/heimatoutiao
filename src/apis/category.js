@@ -5,3 +5,11 @@ export const columnList = function () {
     url: '/category'
   });
 }
+
+export const addColumnList = function (data) {
+  return myaxios({
+    url: '/category',
+    data
+  });
+}
+

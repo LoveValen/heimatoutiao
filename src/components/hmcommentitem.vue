@@ -8,10 +8,14 @@
         <span>{{ parent.user.nickname }}</span>
         <span>{{ parent.create_date | offsetTimeFormat }}</span>
       </div>
-      <div class="content_right">回复</div>
+      <div class="content_right" @click="replyComment(parent)">回复</div>
     </div>
     <!-- 递归组件 -->
-    <commentitem v-if="parent.parent" :parent="parent.parent"></commentitem>
+    <commentitem
+      v-if="parent.parent"
+      :parent="parent.parent"
+      @send="replyComment(parent.parent)"
+    ></commentitem>
     <div class="container_bottom">{{ parent.content }}</div>
   </div>
 </template>
@@ -33,6 +37,11 @@ export default {
     return {
       axios,
     };
+  },
+  methods: {
+    replyComment(parent) {
+      this.$emit("send", parent); // 向父组件传递数据
+    },
   },
 };
 </script>

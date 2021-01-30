@@ -67,6 +67,7 @@
       <hmcommentfooter
         :article="article"
         :isStar="article.has_star"
+        @reflashData="reflashData"
       ></hmcommentfooter>
     </div>
   </div>
@@ -89,19 +90,25 @@ export default {
     };
   },
   async mounted() {
-    let res = await getArticleDetail(this.$route.params.id);
-    console.log(res);
-    res.data.data.user.head_img =
-      axios.defaults.baseURL + res.data.data.user.head_img; // 拼接头像路径
-    this.article = res.data.data;
-    let resComment = await comment(this.article.id);
-    console.log(resComment);
-    this.comments = resComment.data.data;
+    this.init();
   },
   filters: {
     dateFormat,
   },
   methods: {
+    async init() {
+      let res = await getArticleDetail(this.$route.params.id);
+      console.log(res);
+      res.data.data.user.head_img =
+        axios.defaults.baseURL + res.data.data.user.head_img; // 拼接头像路径
+      this.article = res.data.data;
+      let resComment = await comment(this.article.id);
+      console.log(resComment);
+      this.comments = resComment.data.data;
+    },
+    reflashData() {
+      this.init();
+    },
     // 滚动事件
     scrolltop(params) {
       // console.log(params);
