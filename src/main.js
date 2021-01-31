@@ -5,7 +5,7 @@ import router from '@/router';
 // 导入初始化样式
 import '@/styles/reset.less';
 // 全局注册vant模块
-import { Toast, Uploader, Dialog, Icon, Field, Popup, Picker, Tab, Tabs, List, PullRefresh, Sticky } from 'vant';
+import { Toast, Uploader, Dialog, Icon, Field, Popup, Picker, Tab, Tabs, List, PullRefresh, Sticky, Search } from 'vant';
 
 Vue.use(Toast)
   .use(Uploader)
@@ -19,6 +19,7 @@ Vue.use(Toast)
   .use(List)
   .use(PullRefresh)
   .use(Sticky)
+  .use(Search)
 
 Vue.config.productionTip = false;
 

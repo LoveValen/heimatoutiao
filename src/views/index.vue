@@ -2,7 +2,7 @@
   <div class="index">
     <div class="top">
       <div class="left iconfont iconnew"></div>
-      <div class="search">
+      <div class="search" @click="$router.push({ name: 'search' })">
         <div class="van-icon van-icon-search"></div>
         <div>搜索新闻</div>
       </div>
@@ -65,10 +65,22 @@ export default {
         this.$router.push({ name: "cateManager" });
       }
     };
-    let resColumn = await columnList();
-    // console.log(resColumn); // 栏目列表
-    // 获取栏目列表
-    this.columnList = resColumn.data.data;
+    if (localStorage.getItem("catelist")) {
+      this.columnList = JSON.parse(localStorage.getItem("catelist")) || [];
+      if (localStorage.getItem("token")) {
+        this.columnList.unshift(
+          { id: 0, name: "关注", is_top: 1 },
+          { id: 999, name: "头条", is_top: 1 }
+        );
+      } else {
+        this.columnList.unshift({ id: 999, name: "头条", is_top: 1 });
+      }
+    } else {
+      let resColumn = await columnList();
+      // console.log(resColumn); // 栏目列表
+      // 获取栏目列表
+      this.columnList = resColumn.data.data;
+    }
     // 改造获取的数据，因为每个栏目的数据是互不干扰的，每个栏目的内容分别在单独的数组中
     this.columnList = this.columnList.map((value) => {
       return {

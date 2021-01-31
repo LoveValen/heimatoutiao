@@ -11,7 +11,7 @@
       </div>
       <div class="left_bottom">
         <span>{{ post.user.nickname }}</span>
-        <span>{{ post.comments || 0 }}跟帖</span>
+        <span>{{ post.comment_length }}跟帖</span>
       </div>
     </div>
     <div class="container_right">

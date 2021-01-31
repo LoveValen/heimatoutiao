@@ -64,6 +64,11 @@ const router = new VueRouter({
       name: 'cateManager',
       path: '/cateManager',
       component: () => import('@/views/cateManager.vue'),
+    },
+    {
+      name: 'search',
+      path: '/search',
+      component: () => import('@/views/search.vue'),
     }
   ],
 });

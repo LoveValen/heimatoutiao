@@ -6,10 +6,4 @@ export const columnList = function () {
   });
 }
 
-export const addColumnList = function (data) {
-  return myaxios({
-    url: '/category',
-    data
-  });
-}
 
