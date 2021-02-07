@@ -44,4 +44,20 @@ export const publishcomment = function (id, data) {
   });
 };
 
+// 文章搜索
+export const postSearch = function (params) {
+  return myaxios({ 
+    url: `/post_search`,
+    params
+  });
+};
+
+// 搜索推荐
+export const postRecommend = function (params) {
+  return myaxios({
+    url: '/post_search_recommend',
+    params
+  });
+};
+
 

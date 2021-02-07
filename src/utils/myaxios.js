@@ -5,7 +5,8 @@ import { Toast } from 'vant';
 //   baseURL: 'http://localhost:3000'
 // });
 
-axios.defaults.baseURL = 'http://127.0.0.1:3000';
+// axios.defaults.baseURL = 'http://127.0.0.1:3000';
+axios.defaults.baseURL = 'http://liangwei.tech:3000';
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {

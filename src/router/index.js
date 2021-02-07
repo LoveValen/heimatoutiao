@@ -69,6 +69,11 @@ const router = new VueRouter({
       name: 'search',
       path: '/search',
       component: () => import('@/views/search.vue'),
+    },
+    {
+      name: 'testVuex',
+      path: '/testVuex',
+      component: () => import('@/views/testVuex.vue'),
     }
   ],
 });

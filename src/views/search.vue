@@ -1,109 +1,150 @@
 <template>
-  <div class="search-container">
-    <!-- 搜索栏 -->
-    <!--
-      Tips: 在 van-search 外层增加 form 标签，且 action 不为空，即可在 iOS 输入法中显示搜索按钮
-     -->
-    <!-- <form class="search-form" action="/">
-      <van-search
-        v-model="searchText"
-        show-action
-        placeholder="请输入搜索关键词"
-        background="#3296fa"
-        @search="onSearch"
-        @cancel="onCancel"
-        @focus="isResultShow = false"
-      />
-    </form> -->
+  <div class="search">
     <div class="header">
-      <form action="/">
-        <van-search
-          v-model="searchText"
-          show-action
-          shape="round"
-          background="#3296fa"
-          placeholder="请输入搜索关键词"
-          @search="onSearch"
-          @cancel="onCancel"
-          @focus="isResultShow = false"
-        />
-      </form>
+      <span class="iconfont iconjiantou2" @click="$router.back()"></span>
+      <van-search
+        v-model.trim="keyword"
+        placeholder="请输入搜索关键词"
+        shape="round"
+        @keydown.enter="onSearch"
+      >
+      </van-search>
+      <div @click="onSearch">搜索</div>
     </div>
-    <!-- /搜索栏 -->
-
-    <!-- 搜索结果 -->
-    <search-result v-if="isResultShow" :search-text="searchText" />
-    <!-- /搜索结果 -->
-
-    <!-- 联想建议 -->
-    <search-suggestion
-      v-else-if="searchText"
-      :search-text="searchText"
-      @search="onSearch"
-    />
-    <!-- /联想建议 -->
-
-    <!-- 搜索历史记录 -->
-    <search-history
-      v-else
-      :search-histories="searchHistories"
-      @clear-search-histories="searchHistories = []"
-      @search="onSearch"
-    />
-    <!-- /搜索历史记录 -->
+    <div class="historyList">
+      <h2>
+        搜索记录<span style="float: right" @click="handlerDel">清空</span>
+      </h2>
+      <span
+        v-for="(value, index) in $store.state.historyList"
+        :key="index"
+        @click="handlerSearch(value)"
+      >
+        {{ value }}
+      </span>
+    </div>
+    <div class="historyList" v-show="isShowTips">
+      <h2>搜索结果</h2>
+      <ul>
+        <li
+          v-for="value in resultList"
+          :key="value.id"
+          @click="$router.push({ path: 'articleDetail/' + value.id })"
+        >
+          <span class="title">{{ value.title }}</span>
+        </li>
+        <li v-show="resultList.length == 0 ? true : false">
+          没有搜索到任何内容
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-import SearchHistory from "@/components/search-history";
-import SearchSuggestion from "@/components/search-suggestion";
-import SearchResult from "@/components/search-result";
+import { postSearch, postRecommend } from "@/apis/post.js";
 export default {
-  name: "SearchIndex",
-  components: {
-    SearchHistory,
-    SearchSuggestion,
-    SearchResult,
-  },
-  props: {},
   data() {
     return {
-      searchText: "",
-      isResultShow: false, // 控制搜索结果的展示
-      searchHistories: [], // 搜索的历史记录数据
+      // 显示与隐藏搜索记录
+      isShowTips: false,
+      // 搜索关键字
+      keyword: "",
+      // 搜索结果
+      resultList: [],
     };
   },
-  computed: {},
-  watch: {
-    searchHistories(value) {},
+  mounted() {
+    console.log(this.$store.state.historyList);
+    // 进入搜索页时，搜索框聚焦
+    let input = document.querySelector(".van-field__control");
+    input.focus();
+    // 获取历史记录
+    this.$store.commit(
+      "restoreHistory",
+      JSON.parse(localStorage.getItem("searchHistory")) || []
+    );
   },
   methods: {
-    onSearch(value) {},
-    // 返回
-    onCancel() {
-      this.$router.back();
+    handlerSearch(val) {
+      this.keyword = val;
+      this.init();
+    },
+    onSearch() {
+      this.init();
+    },
+    handlerDel() {
+      this.$store.commit("removeHistory");
+    },
+    async init() {
+      if (!this.keyword) {
+        // 如果输入框的值为空，则不发送请求
+        return;
+      }
+      let res = await postSearch({ keyword: this.keyword });
+      // console.log(res);
+      this.resultList = res.data.data; // 搜索结果
+      this.isShowTips = true; // 显示搜索结果
+      this.$store.commit("addHistory", this.keyword);
+    },
+  },
+  watch: {
+    // 监听关键字的变化，如果没有就隐藏搜素结果
+    keyword(val) {
+      if (!val) {
+        this.isShowTips = false;
+      }
+    },
+    // 监听搜索历史变量，用于同步更新本地存储
+    "$store.state.historyList": function (val) {
+      localStorage.setItem("searchHistory", JSON.stringify(val));
     },
   },
 };
 </script>
 
-<style scoped lang="less">
-.search-container {
-  // padding-top: 108px;
-  // .van-search {
-  //   flex: 1;
-  //   padding: 5px 12px;
-  // }
-  .van-search__action {
-    color: #fff;
-    font-size: 16px;
+<style lang='less' scoped>
+.header {
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  border-bottom: 1px solid #ccc;
+  .van-search {
+    flex: 1;
+    padding: 5px 12px;
   }
-  .search-form {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
+}
+.historyList {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  h2 {
+    line-height: 40px;
+    font-weight: bold;
+  }
+  > a {
+    display: block;
+    text-decoration: underline;
+    line-height: 30px;
+    color: #666;
+  }
+  ul {
+    li {
+      height: 40px;
+      line-height: 40px;
+      background-color: #ccc;
+      margin: 5px;
+      border-radius: 6px;
+      padding-left: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      .title {
+        width: 100%;
+        height: 20px;
+      }
+    }
   }
 }
 </style>
